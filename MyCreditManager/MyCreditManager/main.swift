@@ -20,6 +20,8 @@ func start() {
             addStudent()
         case .deleteStudent:
             deleteStudent()
+        case .addOrUpdateGrade:
+            addOrUpdateGrade()
         case .exit:
             break
         default:
@@ -45,7 +47,7 @@ private func selectMenu(_ input: String) -> Menu? {
     case .deleteStudent:
         print("삭제할 학생의 이름을 입력해주세요")
     case .addOrUpdateGrade:
-        print("성적추가(변경)")
+        print("성적을 추가할 학생의 이름, 과목 이름, 성적(A+, A, F 등)을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift A+\n만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.")
     case .deleteGrade:
         print("성적삭제")
     case .showAverage:
@@ -60,41 +62,68 @@ private func selectMenu(_ input: String) -> Menu? {
 }
 
 private func addStudent() {
-    guard let input = readLine() else {
+    guard let name = readLine() else {
         printAbnormalError()
         return
     }
     
-    let student = Student(name: input)
+    let student = Student(name: name)
     
-    if isExistStudent(student) {
-        print("\(input)은 이미 존재하는 학생입니다. 추가하지 않습니다.")
+    if isExistStudent(name) {
+        print("\(name)은 이미 존재하는 학생입니다. 추가하지 않습니다.")
     } else {
         students.append(student)
         
-        print("\(input) 학생을 추가했습니다.")
+        print("\(name) 학생을 추가했습니다.")
     }
 }
 
 private func deleteStudent() {
+    guard let name = readLine() else {
+        printAbnormalError()
+        return
+    }
+    
+    let student = Student(name: name)
+    
+    if isExistStudent(name) {
+        students.removeAll { $0.name == name }
+        
+        print("\(name) 학생을 삭제했습니다.")
+    } else {
+        print("\(name) 학생을 찾기 못했습니다.")
+    }
+}
+
+private func addOrUpdateGrade() {
     guard let input = readLine() else {
         printAbnormalError()
         return
     }
     
-    let student = Student(name: input)
+    let inputArray = input.components(separatedBy: " ")
+    if inputArray.count != 3 {
+        printAbnormalError()
+        return
+    }
+    let name = inputArray[0]
+    if !isExistStudent(name) {
+        printAbnormalError()
+        return
+    }
     
-    if isExistStudent(student) {
-        students.removeAll { $0.name == student.name }
-        
-        print("\(input) 학생을 삭제했습니다.")
+    let grade = Grade(subject: inputArray[1],
+                      score: Score(rawValue: inputArray[2]) ?? .fail)
+    guard let index = students.firstIndex(where: { $0.name == name }) else { return }
+    if students[index].existGrade(grade) {
+        students[index].updateGrade(grade)
     } else {
-        print("\(input) 학생을 찾기 못했습니다.")
+        students[index].addGrade(grade)
     }
 }
 
-private func isExistStudent(_ student: Student) -> Bool {
-    return students.contains(where: { $0.name == student.name })
+private func isExistStudent(_ name: String) -> Bool {
+    return students.contains(where: { $0.name == name })
 }
 
 private func printAbnormalError() {
