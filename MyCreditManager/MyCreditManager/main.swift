@@ -22,8 +22,12 @@ func start() {
             deleteStudent()
         case .addOrUpdateGrade:
             addOrUpdateGrade()
+        case .deleteGrade:
+            deleteGrade()
+        case .showAverage:
+            showAverage()
         case .exit:
-            break
+            return
         default:
             continue
         }
@@ -49,9 +53,9 @@ private func selectMenu(_ input: String) -> Menu? {
     case .addOrUpdateGrade:
         print("성적을 추가할 학생의 이름, 과목 이름, 성적(A+, A, F 등)을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift A+\n만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.")
     case .deleteGrade:
-        print("성적삭제")
+        print("성적을 삭제할 학생의 이름, 과목 이름을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift")
     case .showAverage:
-        print("평점보기")
+        print("평점을 알고싶은 학생의 이름을 입력해주세요")
     case .exit:
         print("프로그램을 종료합니다...")
     default:
@@ -83,8 +87,6 @@ private func deleteStudent() {
         printAbnormalError()
         return
     }
-    
-    let student = Student(name: name)
     
     if isExistStudent(name) {
         students.removeAll { $0.name == name }
@@ -120,6 +122,48 @@ private func addOrUpdateGrade() {
     } else {
         students[index].addGrade(grade)
     }
+}
+
+private func deleteGrade() {
+    guard let input = readLine() else {
+        printAbnormalError()
+        return
+    }
+    
+    let inputArray = input.components(separatedBy: " ")
+    if inputArray.count != 2 {
+        printAbnormalError()
+        return
+    }
+    let name = inputArray[0]
+    if !isExistStudent(name) {
+        print("\(name) 학생을 찾지 못했습니다.")
+        return
+    }
+    let subject = inputArray[1]
+    guard let index = students.firstIndex(where: { $0.name == name }) else { return }
+    students[index].deleteGrade(subject)
+}
+
+private func showAverage() {
+    guard let name = readLine() else {
+        printAbnormalError()
+        return
+    }
+    
+    if !isExistStudent(name) {
+        print("\(name) 학생을 찾지 못했습니다.")
+        return
+    }
+    guard let index = students.firstIndex(where: { $0.name == name }) else { return }
+    let grades = students[index].grades
+    for grade in grades {
+        print("\(grade.subject): \(grade.score.rawValue)")
+    }
+    
+    let avg = grades.map { $0.score.toDouble() }.reduce(Double(0), +) / Double(grades.count)
+    
+    print("평점 : \(avg)")
 }
 
 private func isExistStudent(_ name: String) -> Bool {
