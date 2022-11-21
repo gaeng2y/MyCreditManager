@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		F064E250292B840C003A9365 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = F064E24F292B840C003A9365 /* main.swift */; };
+		F064E25B292B8718003A9365 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = F064E25A292B8718003A9365 /* Student.swift */; };
+		F064E25D292B872E003A9365 /* Grade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F064E25C292B872E003A9365 /* Grade.swift */; };
+		F064E25F292B8A5C003A9365 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = F064E25E292B8A5C003A9365 /* Score.swift */; };
+		F064E261292B8BF1003A9365 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F064E260292B8BF1003A9365 /* Menu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +29,10 @@
 /* Begin PBXFileReference section */
 		F064E24C292B840C003A9365 /* MyCreditManager */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MyCreditManager; sourceTree = BUILT_PRODUCTS_DIR; };
 		F064E24F292B840C003A9365 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		F064E25A292B8718003A9365 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		F064E25C292B872E003A9365 /* Grade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grade.swift; sourceTree = "<group>"; };
+		F064E25E292B8A5C003A9365 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
+		F064E260292B8BF1003A9365 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,10 @@
 			isa = PBXGroup;
 			children = (
 				F064E24F292B840C003A9365 /* main.swift */,
+				F064E25A292B8718003A9365 /* Student.swift */,
+				F064E25C292B872E003A9365 /* Grade.swift */,
+				F064E25E292B8A5C003A9365 /* Score.swift */,
+				F064E260292B8BF1003A9365 /* Menu.swift */,
 			);
 			path = MyCreditManager;
 			sourceTree = "<group>";
@@ -120,7 +132,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F064E25D292B872E003A9365 /* Grade.swift in Sources */,
 				F064E250292B840C003A9365 /* main.swift in Sources */,
+				F064E25F292B8A5C003A9365 /* Score.swift in Sources */,
+				F064E25B292B8718003A9365 /* Student.swift in Sources */,
+				F064E261292B8BF1003A9365 /* Menu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

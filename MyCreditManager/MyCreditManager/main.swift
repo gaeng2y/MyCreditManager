@@ -7,38 +7,41 @@
 
 import Foundation
 
-enum Menu: String {
-    case addStudent = "1"
-    case deleteStudent = "2"
-    case addOrUpdateGrade = "3"
-    case deleteGrade = "4"
-    case showAverage = "5"
-    case exit = "X"
-}
+var students = [Student]()
 
 start()
 
 func start() {
-    print("원하는 기능을 입력해주세요\n1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제, 5: 평점보기, X: 종료")
-    getInput()
+    while true {
+        print("원하는 기능을 입력해주세요\n1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제, 5: 평점보기, X: 종료")
+        let menu = getInput()
+        switch menu {
+        case .exit:
+            break
+        case .addStudent:
+            addStudent()
+        default:
+            continue
+        }
+    }
 }
 
-private func getInput() {
+private func getInput() -> Menu?{
     guard let input = readLine() else {
         printAbnormalError()
-        return
+        return nil
     }
     
-    selectMenu(input)
+    return selectMenu(input)
 }
 
-private func selectMenu(_ input: String) {
+private func selectMenu(_ input: String) -> Menu? {
     let inputMenu = Menu(rawValue: input)
     switch inputMenu {
     case .addStudent:
-        print("학생추가")
+        print("추가할 학생의 이름을 입력해주세요")
     case .deleteStudent:
-        print("학생삭제")
+        print("삭제할 학생의 이름을 입력해주세요")
     case .addOrUpdateGrade:
         print("성적추가(변경)")
     case .deleteGrade:
@@ -46,10 +49,33 @@ private func selectMenu(_ input: String) {
     case .showAverage:
         print("평점보기")
     case .exit:
-        print("종료")
+        print("프로그램을 종료합니다...")
     default:
         printAbnormalError()
     }
+    
+    return inputMenu
+}
+
+private func addStudent() {
+    guard let input = readLine() else {
+        printAbnormalError()
+        return
+    }
+    
+    let student = Student(name: input)
+    
+    if isExistStudent(student) {
+        print("\(input)은 이미 존재하는 학생입니다. 추가하지 않습니다.")
+    } else {
+        students.append(student)
+        
+        print("\(input) 학생을 추가했습니다.")
+    }
+}
+
+private func isExistStudent(_ student: Student) -> Bool {
+    return students.contains(where: { $0.name == student.name })
 }
 
 private func printAbnormalError() {
