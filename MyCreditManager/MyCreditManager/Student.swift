@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct Students {
+    private var items: [Student] = []
+    
+}
+
 struct Student {
     let name: String
     var grades: [Grade] = []

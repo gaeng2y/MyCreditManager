@@ -14,4 +14,10 @@ enum Menu: String {
     case deleteGrade = "4"
     case showAverage = "5"
     case exit = "X"
+    
+    init?(menu: String) {
+        switch menu {
+            case
+        }
+    }
 }

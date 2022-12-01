@@ -9,11 +9,22 @@ import Foundation
 
 var students = [Student]()
 
-start()
+runProgram()
 
-func start() {
+func runProgram() {
     while true {
-        print("원하는 기능을 입력해주세요\n1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제, 5: 평점보기, X: 종료")
+        do {
+            let input = try receiveUserInput()
+        } catch let error as InputError {
+            switch error {
+            case .inputIsNil:
+                print("input is nil")
+            case .emptyString:
+                print("empty string")
+            }
+        }
+        
+        showMenu()
         let menu = getInput()
         switch menu {
         case .addStudent:
@@ -34,13 +45,31 @@ func start() {
     }
 }
 
-private func getInput() -> Menu?{
-    guard let input = readLine() else {
+private func showMenu() {
+    print("원하는 기능을 입력해주세요\n1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제, 5: 평점보기, X: 종료")
+}
+
+private func selectMenu(_ input: String) -> Menu? {
+    
+    
+    guard  else {
         printAbnormalError()
         return nil
     }
     
     return selectMenu(input)
+}
+
+private func receiveUserInput() throws -> String {
+    guard let input = readLine() else {
+        throw InputError.inputIsNil
+    }
+    
+    guard !input.isEmpty else {
+        throw InputError.emptyString
+    }
+    
+    return input
 }
 
 private func selectMenu(_ input: String) -> Menu? {
