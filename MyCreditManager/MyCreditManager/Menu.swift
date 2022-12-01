@@ -15,9 +15,7 @@ enum Menu: String {
     case showAverage = "5"
     case exit = "X"
     
-    init?(menu: String) {
-        switch menu {
-            case
-        }
+    init?(input: String) {
+        self.init(rawValue: input)
     }
 }
