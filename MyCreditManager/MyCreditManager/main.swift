@@ -17,20 +17,7 @@ func runProgram() {
         do {
             let input = try receiveUserInput()
             let menu = try inputToMenu(input)
-            switch menu {
-            case .addStudent:
-                addStudent()
-            case .deleteStudent:
-                deleteStudent()
-            case .addOrUpdateGrade:
-                addOrUpdateGrade()
-            case .deleteGrade:
-                deleteGrade()
-            case .showAverage:
-                showAverage()
-            case .exit:
-                return
-            }
+            executeMenu(menu)
         } catch let error {
             if let inputError = error as? InputError {
                 switch inputError {
@@ -48,18 +35,6 @@ private func showMenu() {
     print("원하는 기능을 입력해주세요\n1: 학생추가, 2: 학생삭제, 3: 성적추가(변경), 4: 성적삭제, 5: 평점보기, X: 종료")
 }
 
-enum MenuError: Error {
-    case notFound
-}
-
-private func inputToMenu(_ input: String) throws -> Menu {
-    guard let menu = Menu(input: input) else {
-        throw MenuError.notFound
-    }
-    
-    return menu
-}
-
 private func receiveUserInput() throws -> String {
     guard let input = readLine() else {
         throw InputError.inputIsNil
@@ -72,27 +47,52 @@ private func receiveUserInput() throws -> String {
     return input
 }
 
-private func selectMenu(_ input: String) -> Menu? {
-    let inputMenu = Menu(rawValue: input)
-    switch inputMenu {
-    case .addStudent:
-        print("추가할 학생의 이름을 입력해주세요")
-    case .deleteStudent:
-        print("삭제할 학생의 이름을 입력해주세요")
-    case .addOrUpdateGrade:
-        print("성적을 추가할 학생의 이름, 과목 이름, 성적(A+, A, F 등)을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift A+\n만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.")
-    case .deleteGrade:
-        print("성적을 삭제할 학생의 이름, 과목 이름을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift")
-    case .showAverage:
-        print("평점을 알고싶은 학생의 이름을 입력해주세요")
-    case .exit:
-        print("프로그램을 종료합니다...")
-    default:
-        printAbnormalError()
+private func inputToMenu(_ input: String) throws -> Menu {
+    guard let menu = Menu(input: input) else {
+        throw MenuError.notFound
     }
     
-    return inputMenu
+    return menu
 }
+
+private func executeMenu(_ menu: Menu) {
+    switch menu {
+    case .addStudent:
+        addStudent()
+    case .deleteStudent:
+        deleteStudent()
+    case .addOrUpdateGrade:
+        addOrUpdateGrade()
+    case .deleteGrade:
+        deleteGrade()
+    case .showAverage:
+        showAverage()
+    case .exit:
+        return
+    }
+}
+
+//private func selectMenu(_ input: String) -> Menu? {
+//    let inputMenu = Menu(rawValue: input)
+//    switch inputMenu {
+//    case .addStudent:
+//        print("추가할 학생의 이름을 입력해주세요")
+//    case .deleteStudent:
+//        print("삭제할 학생의 이름을 입력해주세요")
+//    case .addOrUpdateGrade:
+//        print("성적을 추가할 학생의 이름, 과목 이름, 성적(A+, A, F 등)을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift A+\n만약에 학생의 성적 중 해당 과목이 존재하면 기존 점수가 갱신됩니다.")
+//    case .deleteGrade:
+//        print("성적을 삭제할 학생의 이름, 과목 이름을 띄어쓰기로 구분하여 차례로 작성해주세요.\n입력예) Mickey Swift")
+//    case .showAverage:
+//        print("평점을 알고싶은 학생의 이름을 입력해주세요")
+//    case .exit:
+//        print("프로그램을 종료합니다...")
+//    default:
+//        printAbnormalError()
+//    }
+//
+//    return inputMenu
+//}
 
 private func addStudent() {
     guard let name = readLine() else {
@@ -186,8 +186,9 @@ private func showAverage() {
     }
     guard let index = students.firstIndex(where: { $0.name == name }) else { return }
     let grades = students[index].grades
-    for grade in grades {
-        print("\(grade.subject): \(grade.score.rawValue)")
+    
+    grades.forEach {
+        print("\($0.subject): \($0.score.rawValue)")
     }
     
     let avg = grades.map { $0.score.toDouble() }.reduce(Double(0), +) / Double(grades.count)
